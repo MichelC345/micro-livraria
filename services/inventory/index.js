@@ -15,10 +15,16 @@ const server = new grpc.Server();
 
 // implementa os métodos do InventoryService
 server.addService(inventoryProto.InventoryService.service, {
-    searchAllProducts: (_, callback) => {
+    SearchAllProducts: (_, callback) => { //callback - 1° retorno caso de erro, 2° retorno caso contrário
         callback(null, {
             products: products,
         });
+    },
+    SearchProductByID: (payload, callback) => {
+        callback(
+            null, //caso de erro, retorna nulo
+            products.find((product) => product.id == payload.request.id) //senão, retorna produto cujo id é igual ao id passado no parâmetro
+        );
     },
 });
 
